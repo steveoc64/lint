@@ -116,7 +116,7 @@ func (l *Linter) LintFiles(files map[string][]byte) ([]Problem, error) {
 
 var (
 	genHdr = []byte("// Code generated ")
-	genFtr = []byte(" DO NOT EDIT.")
+	genFtr = []byte("// DO NOT EDIT.")
 )
 
 // isGenerated reports whether the source file is generated code
@@ -125,7 +125,7 @@ func isGenerated(src []byte) bool {
 	sc := bufio.NewScanner(bytes.NewReader(src))
 	for sc.Scan() {
 		b := sc.Bytes()
-		if bytes.HasPrefix(b, genHdr) && bytes.HasSuffix(b, genFtr) && len(b) >= len(genHdr)+len(genFtr) {
+		if bytes.HasPrefix(b, genHdr) || bytes.HasPrefix(b, genFtr) {
 			return true
 		}
 	}
